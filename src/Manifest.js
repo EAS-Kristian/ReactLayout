@@ -5,12 +5,12 @@ import './App.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Accordion from 'react-bootstrap/Accordion';
-import './Components/Navbar';
-import './Components/Input_box';
-import input from './Components/Input_box';
-import './Components/Textarea';
+import './components/Navbar';
+import './components/Input_box';
+import input from './components/Input_box';
+import './components/Textarea';
 import './Manifest';
-import deleteButton from './Components/Delete';
+import deleteButton from './components/Delete';
 
 
 

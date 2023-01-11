@@ -5,11 +5,10 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
-import './Navbar'
-import navBar from './Navbar';
-import './Input_box'
-import './Textarea'
-import textArea from './Textarea';
+import './components/Navbar'
+import navBar from './components/Navbar';
+import './components/Input_box'
+import textArea from './components/Textarea';
 import './Manifest'
 import headerStyled from './Manifest';
 
