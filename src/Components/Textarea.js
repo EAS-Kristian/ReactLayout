@@ -1,18 +1,26 @@
-import Form from 'react-bootstrap/Form';
+import React from "react";
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/ext-language_tools";
+// import {manifestContext} from '../App'
+// import {manifest} from "../Capa"
 
-
-function textArea() {
+// let mani = this.context
+function renderManifestYaml() {
+  // Render editor
   return (
-    <Form>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label>Manifest YAML</Form.Label>
-        <Form.Control as="textarea" rows={10} col={2} />
-      </Form.Group>
-    </Form>
-  );
+    //<App manifest={manifest}></App>
+    <AceEditor
+      mode="yaml"
+      theme="github"
+      onChange={renderManifestYaml}
+      name="manifestYaml"
+      // value={mani.manifestContext}
+    />
+  )
 }
-
-export default textArea
+export default renderManifestYaml
 
 
 

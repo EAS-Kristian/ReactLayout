@@ -4,21 +4,17 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import './App.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Accordion from 'react-bootstrap/Accordion';
 import './components/Navbar';
 import './components/Input_box';
-import input from './components/Input_box';
 import './components/Textarea';
 import './Manifest';
-import deleteButton from './components/Delete';
-
-
-
+import './Capa';
+import capabilityCard from './components/Capabilityelement';
 
 
 function headerStyled() {
   return (
-    <Card>
+    <Card className="manifest">
       <Card.Header as="h5">Manifest</Card.Header>
       <Card.Header>
         <Row>
@@ -51,84 +47,9 @@ function headerStyled() {
           </Col>
         </Row>
       </Card.Header>
-      <Card.Body>
+      <Card.Body className="cardname">
         <Row sm={8}>
-          <Card>
-            <Accordion>
-              <Accordion.Header>
-                <Col>
-                  Capability 1
-                </Col>
-                <Col>
-                  <Dropdown>
-                    <Dropdown.Toggle>
-                      Add Directive
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu >
-                      <Dropdown.Item>Add Directive</Dropdown.Item>
-                      <Dropdown.Item>Directive 1</Dropdown.Item>
-                      <Dropdown.Item>Directive 2</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Col>
-                {deleteButton()}
-              </Accordion.Header>
-              <Accordion.Body>
-                <Card>
-                  <Accordion>
-                    <Accordion.Header>
-                      <Col>
-                        Directive 1
-                      </Col>
-                      {deleteButton()}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      {input()}
-                    </Accordion.Body>
-                  </Accordion>
-                </Card>
-              </Accordion.Body>
-            </Accordion>
-          </Card>
-        </Row>
-        <Row sm={8}>
-          <Card>
-            <Accordion>
-              <Accordion.Header>
-                <Col>
-                  Capability 2
-                </Col>
-                <Col>
-                  <Dropdown>
-                    <Dropdown.Toggle>
-                      Add Directive
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item>Add Directive</Dropdown.Item>
-                      <Dropdown.Item>Directive 1</Dropdown.Item>
-                      <Dropdown.Item>Directive 2</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Col>
-                {deleteButton()}
-              </Accordion.Header>
-              <Accordion.Body>
-                <Card>
-                  <Accordion>
-                    <Accordion.Header>
-                      <Col>
-                        Directive 2
-                      </Col>
-                      {deleteButton()}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      {input()}
-                    </Accordion.Body>
-                  </Accordion>
-                </Card>
-              </Accordion.Body>
-            </Accordion>
-          </Card>
+          {capabilityCard()}
         </Row>
       </Card.Body>
     </Card>

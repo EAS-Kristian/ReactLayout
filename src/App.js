@@ -1,30 +1,36 @@
 import './App.css';
+import React, { useState, useEffect, createContext } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Dropdown from 'react-bootstrap/Dropdown'
-import Button from 'react-bootstrap/Button'
-import Accordion from 'react-bootstrap/Accordion'
 import './components/Navbar'
 import navBar from './components/Navbar';
 import './components/Input_box'
-import textArea from './components/Textarea';
+import onChange from './components/Textarea';
 import './Manifest'
 import headerStyled from './Manifest';
 
+export const manifestContext = React.createContext('HELLO');
 
 function ResponsiveAutoExample() {
+
   return (
     <>
-      <Container>
-        <Row md={1}>{navBar()}</Row>
+      <Container fluid>
+        <Col>
+        <Row>{navBar()}</Row>
+        </Col>
         <Row>
           <Col>
             <Container>
               {headerStyled()}
             </Container>
           </Col>
-          <Col xs={6} sm={4}>{textArea()} </Col>
+         
+          <Col xs={6} sm={4}>
+            <Row>MANIFEST YAML</Row>
+            {onChange()} 
+            </Col>
         </Row>
       </Container>
 
