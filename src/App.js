@@ -1,5 +1,4 @@
 import './App.css';
-import React, { useState, useEffect, createContext } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,7 +8,6 @@ import './components/Input_box'
 import  renderManifestYaml from './components/Textarea';
 import headerStyled from './Manifest';
 
-export const manifestContext = React.createContext('HELLO');
 
 function ResponsiveAutoExample() {
 

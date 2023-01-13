@@ -6,7 +6,10 @@ import axios from "axios";
 import { Spinner } from 'react-bootstrap';
 import './App.css';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 
 
 export default function App() {
@@ -125,93 +128,104 @@ export default function App() {
     }
 
     return (
-        <div>
-            <div>
-                {
-                    <>
-                        <div>
-                            <Dropdown onSelect={(eventKey) => { setSelectedCap(eventKey) }}>
-                                <Dropdown.Toggle className="float-start" variant="success" id="dropdown-basic">
-                                    {selectedCapability !== undefined ? selectedCapability : "Capability"}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    {Object.keys(capabilities).map(key => <Dropdown.Item eventKey={key}>{key}</Dropdown.Item>)}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </div>
-                        <div>
-
-                            <Dropdown onSelect={(eventKey) => { setSelectedVersion(eventKey) }}>
-                                <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
-                                    {selectedVersion !== undefined ? selectedVersion : "Version"}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    {selectedCapability !== undefined && Object.keys(capabilities[selectedCapability]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </div>
+        <Card className="manifest">
+            <Card.Header as="h5">Manifest</Card.Header>
+            <Card.Header>
+                <Row>
+                    <Col>
+                        <Dropdown onSelect={(eventKey) => { setSelectedCap(eventKey) }}>
+                            <Dropdown.Toggle className="float-start" variant="success" id="dropdown-basic">
+                                {selectedCapability !== undefined ? selectedCapability : "Capability"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {Object.keys(capabilities).map(key => <Dropdown.Item eventKey={key}>{key}</Dropdown.Item>)}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col>
+                        <Dropdown onSelect={(eventKey) => { setSelectedVersion(eventKey) }}>
+                            <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
+                                {selectedVersion !== undefined ? selectedVersion : "Version"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {selectedCapability !== undefined && Object.keys(capabilities[selectedCapability]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col sm={7}>
                         <button onClick={() => handleAddCapability(selectedCapability, selectedVersion)}> Create Capability </button>
+                    </Col>
+                </Row>
+            </Card.Header>
+            <Card.Body className="cardname">
+                <Row sm={8}>
+                   </Row>
+                   </Card.Body>
+                 </Card>
+    
+    )
+    }
 
-                    </>
-                }
 
-            </div>
-            <div>
-                {
-                    manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
 
-                        return (
-                            <div>
-                                <h1 id={componentIndex}>{component.name}          {component.version}</h1><button onClick={() => deleteCapability(componentIndex)}>Delete Capability</button>
-                                <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
-                                    <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
-                                        Add Directive
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu >
-                                        {manifest !== {} && Object.keys(capabilities[component.name][component.version]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
-                                    </Dropdown.Menu>
-                                </Dropdown>
 
-                                <div>
-                                    {component.directives && component.directives.map((directive, directiveIndex) => {
-                                        return (
-                                            <div>
-                                                {capabilities[component.name][component.version][Object.keys(directive)[0]] && <><Form
-                                                    schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
-                                                    formData={directive}
-                                                    onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
-                                                    validator={validator}
-                                                    children={true}
-                                                    dataDirectiveIndex={directiveIndex}
-                                                />
-                                                    <button onClick={() => deleteDirective(componentIndex, directiveIndex)}>Delete Directive</button></>}
-                                            </div>
-                                        )
-                                    })
-                                    }
-                                </div>
-                            </div>
-                        )
-                    }) : "No capabilities"
-                }
 
-                <div className="manifestText">
-                    {loadingTextBox && <Spinner animation="border" size="sm" variant="primary" />}
-                    <form>
-                        {manifest && <textarea
-                            className="form-control"
-                            rows="10"
-                            value={yaml.dump(manifest) || ""}
-                            onChange={handleManifestTextChange}
-                        >
-                        </textarea>}
-                    </form>
-                </div>
 
-            </div>
-        </div>
-    ) // Close Parent Return
+//                     {
+//                         manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
 
-} // App Function
+//                             return (
+//                                 <div>
+//                                     <h1 id={componentIndex}>{component.name}          {component.version}</h1><button onClick={() => deleteCapability(componentIndex)}>Delete Capability</button>
+//                                     <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
+//                                         <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
+//                                             Add Directive
+//                                         </Dropdown.Toggle>
+//                                         <Dropdown.Menu >
+//                                             {manifest !== {} && Object.keys(capabilities[component.name][component.version]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
+//                                         </Dropdown.Menu>
+//                                     </Dropdown>
+
+//                                     <div>
+//                                         {component.directives && component.directives.map((directive, directiveIndex) => {
+//                                             return (
+//                                                 <div>
+//                                                     {capabilities[component.name][component.version][Object.keys(directive)[0]] && <><Form
+//                                                         schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
+//                                                         formData={directive}
+//                                                         onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
+//                                                         validator={validator}
+//                                                         children={true}
+//                                                         dataDirectiveIndex={directiveIndex}
+//                                                     />
+//                                                         <button onClick={() => deleteDirective(componentIndex, directiveIndex)}>Delete Directive</button></>}
+//                                                 </div>
+//                                             )
+//                                         })
+//                                         }
+//                                     </div>
+//                                 </div>
+//                             )
+//                         }) : "No capabilities"
+//                     }
+
+//                     <div className="manifestText">
+//                         {loadingTextBox && <Spinner animation="border" size="sm" variant="primary" />}
+//                         <form>
+//                             {manifest && <textarea
+//                                 className="form-control"
+//                                 rows="10"
+//                                 value={yaml.dump(manifest) || ""}
+//                                 onChange={handleManifestTextChange}
+//                             >
+//                             </textarea>}
+//                         </form>
+//                     </div>
+
+//                 </div>
+//             </div>
+//             ) // Close Parent Return
+
+// } // App Function
 
 // --> 
