@@ -6,8 +6,7 @@ import Col from 'react-bootstrap/Col';
 import './components/Navbar'
 import navBar from './components/Navbar';
 import './components/Input_box'
-import onChange from './components/Textarea';
-import './Manifest'
+import  renderManifestYaml from './components/Textarea';
 import headerStyled from './Manifest';
 
 export const manifestContext = React.createContext('HELLO');
@@ -26,10 +25,9 @@ function ResponsiveAutoExample() {
               {headerStyled()}
             </Container>
           </Col>
-         
           <Col xs={6} sm={4}>
             <Row>MANIFEST YAML</Row>
-            {onChange()} 
+            {renderManifestYaml()} 
             </Col>
         </Row>
       </Container>

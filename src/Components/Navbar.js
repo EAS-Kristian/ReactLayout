@@ -11,7 +11,7 @@ function navBar() {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="#features">How-To Guide</Nav.Link>
-            <Nav.Link href="#pricing">Github</Nav.Link>
+            <Nav.Link href="https://github.com/">Github</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -19,21 +19,4 @@ function navBar() {
   );
 }
 
-
-
-// function navBar(){
-// return(
-//         <>
-//           <Navbar bg="dark" variant="dark">
-//             <Container>
-//               <Nav className="me-auto">
-//                 <Nav.Link href="#documentation">Documentation</Nav.Link>
-//                 <Nav.Link href="#howtoguide">How-To Guide</Nav.Link>
-//                 <Nav.Link href="https://github.com/">Github</Nav.Link>
-//               </Nav>
-//             </Container>
-//           </Navbar>
-//           </>
-// )
-// }
 export default navBar

@@ -1,23 +1,27 @@
-import React from "react";
+import React, { Component } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import { useState, createContext } from "react";
 // import {manifestContext} from '../App'
-// import {manifest} from "../Capa"
+//import {manifest} from "../Capa"
+import "../Capa";
 
-// let mani = this.context
+
+
+
 function renderManifestYaml() {
-  // Render editor
+
   return (
-    //<App manifest={manifest}></App>
-    <AceEditor
-      mode="yaml"
-      theme="github"
-      onChange={renderManifestYaml}
-      name="manifestYaml"
-      // value={mani.manifestContext}
-    />
+    <div>
+      <AceEditor
+        mode="yaml"
+        theme="github"
+        onChange={renderManifestYaml}
+        name="manifestYaml"
+      />
+      </div>
   )
 }
 export default renderManifestYaml

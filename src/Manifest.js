@@ -7,8 +7,6 @@ import Col from 'react-bootstrap/Col';
 import './components/Navbar';
 import './components/Input_box';
 import './components/Textarea';
-import './Manifest';
-import './Capa';
 import capabilityCard from './components/Capabilityelement';
 
 
