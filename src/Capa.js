@@ -10,6 +10,13 @@ import { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Accordion from 'react-bootstrap/Accordion';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+// import Navbar from 'react-bootstrap/Navbar';
+import { Button, Navbar } from 'react-bootstrap';
+import CodeEditor from '@uiw/react-textarea-code-editor';
+
 
 
 export default function App() {
@@ -73,7 +80,7 @@ export default function App() {
         }
         setCapabilities(curCapabilities)
         setLoadingTextBox(false)
-        console.log(capabilities)
+       // console.log(capabilities)
 
     }
 
@@ -95,6 +102,7 @@ export default function App() {
         }
         setManifest(tempCode);
         loadCache(manifest)
+        console.log(manifest)
     }
     const deleteDirective = (componentIndex, directiveIndex) => {
         let tempCode = { ...manifest }
@@ -119,113 +127,177 @@ export default function App() {
         });
 
         setManifest(m);
-        console.log(manifest);
+       // console.log(manifest);
 
     }
     const handleManifestTextChange = event => {
+        //console.log(event)
         setManifest(yaml.load(event.target.value));
         loadCache(yaml.load(event.target.value));
     }
 
+
     return (
-        <Card className="manifest">
-            <Card.Header as="h5">Manifest</Card.Header>
-            <Card.Header>
-                <Row>
-                    <Col>
-                        <Dropdown onSelect={(eventKey) => { setSelectedCap(eventKey) }}>
-                            <Dropdown.Toggle className="float-start" variant="success" id="dropdown-basic">
-                                {selectedCapability !== undefined ? selectedCapability : "Capability"}
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                {Object.keys(capabilities).map(key => <Dropdown.Item eventKey={key}>{key}</Dropdown.Item>)}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Col>
-                    <Col>
-                        <Dropdown onSelect={(eventKey) => { setSelectedVersion(eventKey) }}>
-                            <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
-                                {selectedVersion !== undefined ? selectedVersion : "Version"}
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                {selectedCapability !== undefined && Object.keys(capabilities[selectedCapability]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Col>
-                    <Col sm={7}>
-                        <button onClick={() => handleAddCapability(selectedCapability, selectedVersion)}> Create Capability </button>
-                    </Col>
-                </Row>
-            </Card.Header>
-            <Card.Body className="cardname">
-                <Row sm={8}>
-                   </Row>
-                   </Card.Body>
-                 </Card>
-    
+
+
+        <Container fluid>
+            <Row>
+                <Col>
+                    <Row>
+                        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
+                            <Container>
+                                <Navbar.Brand href="#home">Documentation</Navbar.Brand>
+                                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                                <Navbar.Collapse id="responsive-navbar-nav">
+                                    <Nav className="me-auto">
+                                        <Nav.Link href="#features">How-To Guide</Nav.Link>
+                                        <Nav.Link href="https://github.com/">Github</Nav.Link>
+                                    </Nav>
+                                </Navbar.Collapse>
+                            </Container>
+                        </Navbar>
+                    </Row>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Container>
+                        <Card className="manifest">
+                            <Card.Header as="h5">Manifest</Card.Header>
+                            <Card.Header>
+                                <Row>
+                                    <Col>
+                                        <Dropdown onSelect={(eventKey) => { setSelectedCap(eventKey) }}>
+                                            <Dropdown.Toggle className="float-start" variant="primary" id="dropdown-basic">
+                                                {selectedCapability !== undefined ? selectedCapability : "Capability"}
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                                {Object.keys(capabilities).map(key => <Dropdown.Item eventKey={key}>{key}</Dropdown.Item>)}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </Col>
+                                    <Col>
+                                        <Dropdown onSelect={(eventKey) => { setSelectedVersion(eventKey) }}>
+                                            <Dropdown.Toggle className="float-end" variant="primary" id="dropdown-basic">
+                                                {selectedVersion !== undefined ? selectedVersion : "Version"}
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                                {selectedCapability !== undefined && Object.keys(capabilities[selectedCapability]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </Col>
+                                    <Col sm={7}>
+                                        <Button onClick={() => handleAddCapability(selectedCapability, selectedVersion)}>Add</Button>
+                                    </Col>
+                                </Row>
+                            </Card.Header>
+                            <Card.Body className="cardname">
+                                <Row sm={8}>
+                                    {
+                                        manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
+
+                                            return (
+                                                <div>
+                                                    <Card className="no-padding">
+                                                        <Accordion>
+                                                            <Accordion.Header>
+                                                                <Col>
+                                                                    {component.name}
+                                                                </Col>
+                                                                <Col>
+                                                                    <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
+                                                                        <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
+                                                                            Add Directive
+                                                                        </Dropdown.Toggle>
+                                                                        <Dropdown.Menu >
+                                                                            {manifest !== {} && Object.keys(capabilities[component.name][component.version]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
+                                                                        </Dropdown.Menu>
+                                                                    </Dropdown>
+                                                                </Col>
+//DELETE BUTTON
+                                                            </Accordion.Header>
+
+                                                            <div>
+                                                                {component.directives && component.directives.map((directive, directiveIndex) => {
+                                                                    return (
+                                                                        <div>
+                                                                            {console.log(manifest)}
+                                                                            {capabilities[component.name][component.version][Object.keys(directive)[0]] && <>
+                                                                                <Accordion.Body>
+                                                                                    <Card>
+                                                                                        <Accordion>
+                                                                                            <Accordion.Header>
+                                                                                                <Col>
+                                                                                                    {Object.keys(directive)[0]}
+                                                                                                </Col>
+                                                           //DELETE DIRECTIVE
+
+                                                                                            </Accordion.Header>
+
+                                                                                            <Accordion.Body><Form
+                                                                                                schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
+                                                                                                formData={directive}
+                                                                                                onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
+                                                                                                validator={validator}
+                                                                                                children={true}
+                                                                                                dataDirectiveIndex={directiveIndex}
+                                                                                            />
+                                                                                                <Button onClick={() => deleteDirective(componentIndex, directiveIndex)}>Delete Directive</Button>
+                                                                                            </Accordion.Body>
+                                                                                        </Accordion>
+                                                                                    </Card>
+                                                                                </Accordion.Body></>}
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                                }
+                                                            </div>
+
+                                                        </Accordion>
+                                                    </Card>
+                                                </div>
+                                            )
+                                        }) : "No capabilities"
+                                    }
+
+
+
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    </Container>
+                </Col>
+                <Col xs={6} sm={4}>
+                    <Row>MANIFEST YAML</Row>
+                    <div>
+                        {loadingTextBox && <Spinner animation="border" size="sm" variant="primary" />}
+                        {/* <AceEditor
+                            mode="yaml"
+                            theme="github"
+                            value={yaml.dump(manifest) || ""}
+                            onChange={handleManifestTextChange}
+                            name="manifestYaml"
+                        /> */}
+                        <CodeEditor
+                            value={yaml.dump(manifest) || ""}
+                            language="js"
+                            onChange={handleManifestTextChange}
+                            padding={15}
+                            style={{
+                                fontSize: 12,
+                                backgroundColor: "#f5f5f5",
+                                fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                            }}
+                        />
+
+                    </div>
+                </Col>
+            </Row>
+        </Container>
+
     )
-    }
+}
 
 
 
 
-
-
-//                     {
-//                         manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
-
-//                             return (
-//                                 <div>
-//                                     <h1 id={componentIndex}>{component.name}          {component.version}</h1><button onClick={() => deleteCapability(componentIndex)}>Delete Capability</button>
-//                                     <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
-//                                         <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
-//                                             Add Directive
-//                                         </Dropdown.Toggle>
-//                                         <Dropdown.Menu >
-//                                             {manifest !== {} && Object.keys(capabilities[component.name][component.version]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
-//                                         </Dropdown.Menu>
-//                                     </Dropdown>
-
-//                                     <div>
-//                                         {component.directives && component.directives.map((directive, directiveIndex) => {
-//                                             return (
-//                                                 <div>
-//                                                     {capabilities[component.name][component.version][Object.keys(directive)[0]] && <><Form
-//                                                         schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
-//                                                         formData={directive}
-//                                                         onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
-//                                                         validator={validator}
-//                                                         children={true}
-//                                                         dataDirectiveIndex={directiveIndex}
-//                                                     />
-//                                                         <button onClick={() => deleteDirective(componentIndex, directiveIndex)}>Delete Directive</button></>}
-//                                                 </div>
-//                                             )
-//                                         })
-//                                         }
-//                                     </div>
-//                                 </div>
-//                             )
-//                         }) : "No capabilities"
-//                     }
-
-//                     <div className="manifestText">
-//                         {loadingTextBox && <Spinner animation="border" size="sm" variant="primary" />}
-//                         <form>
-//                             {manifest && <textarea
-//                                 className="form-control"
-//                                 rows="10"
-//                                 value={yaml.dump(manifest) || ""}
-//                                 onChange={handleManifestTextChange}
-//                             >
-//                             </textarea>}
-//                         </form>
-//                     </div>
-
-//                 </div>
-//             </div>
-//             ) // Close Parent Return
-
-// } // App Function
-
-// --> 
