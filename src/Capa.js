@@ -16,6 +16,7 @@ import Nav from 'react-bootstrap/Nav';
 // import Navbar from 'react-bootstrap/Navbar';
 import { Button, Navbar } from 'react-bootstrap';
 import CodeEditor from '@uiw/react-textarea-code-editor';
+import './index.css'
 
 
 
@@ -80,7 +81,7 @@ export default function App() {
         }
         setCapabilities(curCapabilities)
         setLoadingTextBox(false)
-       // console.log(capabilities)
+        // console.log(capabilities)
 
     }
 
@@ -127,7 +128,7 @@ export default function App() {
         });
 
         setManifest(m);
-       // console.log(manifest);
+        // console.log(manifest);
 
     }
     const handleManifestTextChange = event => {
@@ -138,7 +139,6 @@ export default function App() {
 
 
     return (
-
 
         <Container fluid>
             <Row>
@@ -214,14 +214,14 @@ export default function App() {
                                                                         </Dropdown.Menu>
                                                                     </Dropdown>
                                                                 </Col>
-//DELETE BUTTON
+                                                                <Button className="deletebutton" onClick={() => deleteCapability(componentIndex)}>X</Button>
                                                             </Accordion.Header>
 
                                                             <div>
                                                                 {component.directives && component.directives.map((directive, directiveIndex) => {
                                                                     return (
                                                                         <div>
-                                                                            {console.log(manifest)}
+                                                                            {console.log(Object.keys(directive)[0])}
                                                                             {capabilities[component.name][component.version][Object.keys(directive)[0]] && <>
                                                                                 <Accordion.Body>
                                                                                     <Card>
@@ -230,19 +230,19 @@ export default function App() {
                                                                                                 <Col>
                                                                                                     {Object.keys(directive)[0]}
                                                                                                 </Col>
-                                                           //DELETE DIRECTIVE
-
+                                                                                                <Button onClick={() => deleteDirective(componentIndex, directiveIndex)} className="deletebutton">X</Button>
                                                                                             </Accordion.Header>
-
-                                                                                            <Accordion.Body><Form
-                                                                                                schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
-                                                                                                formData={directive}
-                                                                                                onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
-                                                                                                validator={validator}
-                                                                                                children={true}
-                                                                                                dataDirectiveIndex={directiveIndex}
-                                                                                            />
-                                                                                                <Button onClick={() => deleteDirective(componentIndex, directiveIndex)}>Delete Directive</Button>
+                                                                                            <Accordion.Body>
+                                                                                                {capabilities[component.name][component.version][Object.keys(directive)[0]] &&
+                                                                                                    <Form
+                                                                                                        schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
+                                                                                                        formData={directive}
+                                                                                                        onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
+                                                                                                        validator={validator}
+                                                                                                        children={true}
+                                                                                                        dataDirectiveIndex={directiveIndex}
+                                                                                                    />}
+                                                                                                {/* {JSON.stringify(capabilities[component.name][component.version][Object.keys(directive)[0]])} */}
                                                                                             </Accordion.Body>
                                                                                         </Accordion>
                                                                                     </Card>
@@ -271,13 +271,6 @@ export default function App() {
                     <Row>MANIFEST YAML</Row>
                     <div>
                         {loadingTextBox && <Spinner animation="border" size="sm" variant="primary" />}
-                        {/* <AceEditor
-                            mode="yaml"
-                            theme="github"
-                            value={yaml.dump(manifest) || ""}
-                            onChange={handleManifestTextChange}
-                            name="manifestYaml"
-                        /> */}
                         <CodeEditor
                             value={yaml.dump(manifest) || ""}
                             language="js"
