@@ -1,6 +1,5 @@
 
 import validator from '@rjsf/validator-ajv8';
-import Form from 'react-bootstrap/form';
 import yaml from 'js-yaml';
 import axios from "axios";
 import { Spinner } from 'react-bootstrap';
@@ -17,6 +16,8 @@ import Nav from 'react-bootstrap/Nav';
 import { Button, Navbar } from 'react-bootstrap';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import './index.css'
+import Form from "@rjsf/bootstrap-4";
+// import { CopyToClipboard } from "react-copy-to-clipboard"
 
 
 
@@ -115,6 +116,7 @@ export default function App() {
     const deleteCapability = (componentIndex) => {
         let tempCode = { ...manifest }
         delete tempCode.capabilities[componentIndex]
+        tempCode.capabilities = tempCode.capabilities.filter(function () { return true })
         setManifest(tempCode)
     }
 
@@ -159,6 +161,7 @@ export default function App() {
                     </Row>
                 </Col>
             </Row>
+            {loadingTextBox ? <Spinner animation="border" size="sm" variant="primary" /> :
             <Row>
                 <Col>
                     <Container>
@@ -206,7 +209,7 @@ export default function App() {
                                                                 </Col>
                                                                 <Col>
                                                                     <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
-                                                                        <Dropdown.Toggle className="float-end" variant="success" id="dropdown-basic">
+                                                                        <Dropdown.Toggle className="float-end" variant="primary" id="dropdown-basic">
                                                                             Add Directive
                                                                         </Dropdown.Toggle>
                                                                         <Dropdown.Menu >
@@ -214,15 +217,17 @@ export default function App() {
                                                                         </Dropdown.Menu>
                                                                     </Dropdown>
                                                                 </Col>
-                                                                <Button className="deletebutton" onClick={() => deleteCapability(componentIndex)}>X</Button>
+                                                                <Button className="deletebutton" variant="danger" onClick={() => deleteCapability(componentIndex)}>X</Button>
+                                                                {/* {directive} */}
                                                             </Accordion.Header>
 
                                                             <div>
                                                                 {component.directives && component.directives.map((directive, directiveIndex) => {
                                                                     return (
                                                                         <div>
-                                                                            {console.log(Object.keys(directive)[0])}
-                                                                            {capabilities[component.name][component.version][Object.keys(directive)[0]] && <>
+                                                                            {/* {console.log(Object.keys(directive)[0])}
+                                                                            {capabilities[component.name][component.version][Object.keys(directive)[0]] &&  */}
+                                                                            <>
                                                                                 <Accordion.Body>
                                                                                     <Card>
                                                                                         <Accordion>
@@ -230,7 +235,7 @@ export default function App() {
                                                                                                 <Col>
                                                                                                     {Object.keys(directive)[0]}
                                                                                                 </Col>
-                                                                                                <Button onClick={() => deleteDirective(componentIndex, directiveIndex)} className="deletebutton">X</Button>
+                                                                                                <Button variant="danger" onClick={() => deleteDirective(componentIndex, directiveIndex)} className="deletebutton">X</Button>
                                                                                             </Accordion.Header>
                                                                                             <Accordion.Body>
                                                                                                 {capabilities[component.name][component.version][Object.keys(directive)[0]] &&
@@ -246,7 +251,7 @@ export default function App() {
                                                                                             </Accordion.Body>
                                                                                         </Accordion>
                                                                                     </Card>
-                                                                                </Accordion.Body></>}
+                                                                                </Accordion.Body></>
                                                                         </div>
                                                                     )
                                                                 })
@@ -259,9 +264,6 @@ export default function App() {
                                             )
                                         }) : "No capabilities"
                                     }
-
-
-
                                 </Row>
                             </Card.Body>
                         </Card>
@@ -269,11 +271,20 @@ export default function App() {
                 </Col>
                 <Col xs={6} sm={4}>
                     <Row>MANIFEST YAML</Row>
+                    {/* <Button
+                        variant="primary"
+                        onClick={(e) => {
+                            let paste = navigator.clipboard.readText();
+                            setManifest(paste);
+                        }}
+                    >
+                        Paste
+                    </Button> */}
                     <div>
-                        {loadingTextBox && <Spinner animation="border" size="sm" variant="primary" />}
+                        
                         <CodeEditor
                             value={yaml.dump(manifest) || ""}
-                            language="js"
+                            language="yaml"
                             onChange={handleManifestTextChange}
                             padding={15}
                             style={{
@@ -282,14 +293,52 @@ export default function App() {
                                 fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
                             }}
                         />
-
                     </div>
                 </Col>
             </Row>
+}
         </Container>
 
     )
 }
+
+
+// const ClipboardCopy = (copyText) => {
+//   const [isCopied, setIsCopied] = useState(false)
+//     async function copyTextToClipboard(text) {
+//       if ('clipboard' in navigator) {
+//         return await navigator.clipboard.writeText(text);
+//       } else {
+//         return document.execCommand('copy', true, text);
+//       }
+//     }
+//     const handleCopyClick = () => {
+//       copyTextToClipboard(copyText)
+//         .then(() => {
+//           setIsCopied(true);
+//           setTimeout(() => {
+//             setIsCopied(false);
+//           }, 1500);
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//         });
+//     }
+//     return (
+//       <div>
+//         <input type="text" value={copyText} readOnly />
+//         <button onClick={handleCopyClick}>
+//           <span>{isCopied ? 'Copied!' : 'Copy'}</span>
+//         </button>
+//       </div>
+//     );
+//   }
+
+
+
+
+
+
 
 
 
