@@ -162,116 +162,116 @@ export default function App() {
                 </Col>
             </Row>
             {loadingTextBox ? <Spinner animation="border" size="sm" variant="primary" /> :
-            <Row>
-                <Col>
-                    <Container>
-                        <Card className="manifest">
-                            <Card.Header as="h5">Manifest</Card.Header>
-                            <Card.Header>
-                                <Row>
-                                    <Col>
-                                        <Dropdown onSelect={(eventKey) => { setSelectedCap(eventKey) }}>
-                                            <Dropdown.Toggle className="float-start" variant="primary" id="dropdown-basic">
-                                                {selectedCapability !== undefined ? selectedCapability : "Capability"}
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                                {Object.keys(capabilities).map(key => <Dropdown.Item eventKey={key}>{key}</Dropdown.Item>)}
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    </Col>
-                                    <Col>
-                                        <Dropdown onSelect={(eventKey) => { setSelectedVersion(eventKey) }}>
-                                            <Dropdown.Toggle className="float-end" variant="primary" id="dropdown-basic">
-                                                {selectedVersion !== undefined ? selectedVersion : "Version"}
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                                {selectedCapability !== undefined && Object.keys(capabilities[selectedCapability]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    </Col>
-                                    <Col sm={7}>
-                                        <Button onClick={() => handleAddCapability(selectedCapability, selectedVersion)}>Add</Button>
-                                    </Col>
-                                </Row>
-                            </Card.Header>
-                            <Card.Body className="cardname">
-                                <Row sm={8}>
-                                    {
-                                        manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
+                <Row>
+                    <Col>
+                        <Container>
+                            <Card className="manifest">
+                                <Card.Header as="h5">Manifest</Card.Header>
+                                <Card.Header>
+                                    <Row>
+                                        <Col>
+                                            <Dropdown onSelect={(eventKey) => { setSelectedCap(eventKey) }}>
+                                                <Dropdown.Toggle className="float-start" variant="primary" id="dropdown-basic">
+                                                    {selectedCapability !== undefined ? selectedCapability : "Capability"}
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    {Object.keys(capabilities).map(key => <Dropdown.Item eventKey={key}>{key}</Dropdown.Item>)}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown onSelect={(eventKey) => { setSelectedVersion(eventKey) }}>
+                                                <Dropdown.Toggle className="float-end" variant="primary" id="dropdown-basic">
+                                                    {selectedVersion !== undefined ? selectedVersion : "Version"}
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    {selectedCapability !== undefined && Object.keys(capabilities[selectedCapability]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                        <Col sm={7}>
+                                            <Button onClick={() => handleAddCapability(selectedCapability, selectedVersion)}>Add</Button>
+                                        </Col>
+                                    </Row>
+                                </Card.Header>
+                                <Card.Body className="cardname">
+                                    <Row sm={8}>
+                                        {
+                                            manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
 
-                                            return (
-                                                <div>
-                                                    <Card className="no-padding">
-                                                        <Accordion>
-                                                            <Accordion.Header>
-                                                                <Col>
-                                                                    {component.name}
-                                                                </Col>
-                                                                <Col>
-                                                                    <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
-                                                                        <Dropdown.Toggle className="float-end" variant="primary" id="dropdown-basic">
-                                                                            Add Directive
-                                                                        </Dropdown.Toggle>
-                                                                        <Dropdown.Menu >
-                                                                            {manifest !== {} && Object.keys(capabilities[component.name][component.version]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
-                                                                        </Dropdown.Menu>
-                                                                    </Dropdown>
-                                                                </Col>
-                                                                <Button className="deletebutton" variant="danger" onClick={() => deleteCapability(componentIndex)}>X</Button>
-                                                                {/* {directive} */}
-                                                            </Accordion.Header>
+                                                return (
+                                                    <div>
+                                                        <Card className="no-padding">
+                                                            <Accordion>
+                                                                <Accordion.Header>
+                                                                    <Col>
+                                                                        {component.name}
+                                                                    </Col>
+                                                                    <Col>
+                                                                        <Dropdown onSelect={(eventKey) => { addDirective(componentIndex, eventKey) }}>
+                                                                            <Dropdown.Toggle className="float-end manifest" variant="primary" id="dropdown-basic">
+                                                                                Add Directive
+                                                                            </Dropdown.Toggle>
+                                                                            <Dropdown.Menu >
+                                                                                {manifest !== {} && Object.keys(capabilities[component.name][component.version]).map((value) => <Dropdown.Item eventKey={value}>{value}</Dropdown.Item>)}
+                                                                            </Dropdown.Menu>
+                                                                        </Dropdown>
+                                                                    </Col>
+                                                                    <Button className="deletebutton" variant="danger" onClick={() => deleteCapability(componentIndex)}>X</Button>
+                                                                    {/* {directive} */}
+                                                                </Accordion.Header>
 
-                                                            <div>
-                                                                {component.directives && component.directives.map((directive, directiveIndex) => {
-                                                                    return (
-                                                                        <div>
-                                                                            {/* {console.log(Object.keys(directive)[0])}
+                                                                <div>
+                                                                    {component.directives && component.directives.map((directive, directiveIndex) => {
+                                                                        return (
+                                                                            <div>
+                                                                                {/* {console.log(Object.keys(directive)[0])}
                                                                             {capabilities[component.name][component.version][Object.keys(directive)[0]] &&  */}
-                                                                            <>
-                                                                                <Accordion.Body>
-                                                                                    <Card>
-                                                                                        <Accordion>
-                                                                                            <Accordion.Header>
-                                                                                                <Col>
-                                                                                                    {Object.keys(directive)[0]}
-                                                                                                </Col>
-                                                                                                <Button variant="danger" onClick={() => deleteDirective(componentIndex, directiveIndex)} className="deletebutton">X</Button>
-                                                                                            </Accordion.Header>
-                                                                                            <Accordion.Body>
-                                                                                                {capabilities[component.name][component.version][Object.keys(directive)[0]] &&
-                                                                                                    <Form
-                                                                                                        schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
-                                                                                                        formData={directive}
-                                                                                                        onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
-                                                                                                        validator={validator}
-                                                                                                        children={true}
-                                                                                                        dataDirectiveIndex={directiveIndex}
-                                                                                                    />}
-                                                                                                {/* {JSON.stringify(capabilities[component.name][component.version][Object.keys(directive)[0]])} */}
-                                                                                            </Accordion.Body>
-                                                                                        </Accordion>
-                                                                                    </Card>
-                                                                                </Accordion.Body></>
-                                                                        </div>
-                                                                    )
-                                                                })
-                                                                }
-                                                            </div>
+                                                                                <>
+                                                                                    <Accordion.Body>
+                                                                                        <Card>
+                                                                                            <Accordion>
+                                                                                                <Accordion.Header>
+                                                                                                    <Col>
+                                                                                                        {Object.keys(directive)[0]}
+                                                                                                    </Col>
+                                                                                                    <Button variant="danger" onClick={() => deleteDirective(componentIndex, directiveIndex)} className="deletebutton">X</Button>
+                                                                                                </Accordion.Header>
+                                                                                                <Accordion.Body>
+                                                                                                    {capabilities[component.name][component.version][Object.keys(directive)[0]] &&
+                                                                                                        <Form
+                                                                                                            schema={capabilities[component.name][component.version][Object.keys(directive)[0]]}
+                                                                                                            formData={directive}
+                                                                                                            onChange={(formdata) => handleUpdateDirective(formdata, componentIndex, directiveIndex)}
+                                                                                                            validator={validator}
+                                                                                                            children={true}
+                                                                                                            dataDirectiveIndex={directiveIndex}
+                                                                                                        />}
+                                                                                                    {/* {JSON.stringify(capabilities[component.name][component.version][Object.keys(directive)[0]])} */}
+                                                                                                </Accordion.Body>
+                                                                                            </Accordion>
+                                                                                        </Card>
+                                                                                    </Accordion.Body></>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                    }
+                                                                </div>
 
-                                                        </Accordion>
-                                                    </Card>
-                                                </div>
-                                            )
-                                        }) : "No capabilities"
-                                    }
-                                </Row>
-                            </Card.Body>
-                        </Card>
-                    </Container>
-                </Col>
-                <Col xs={6} sm={4}>
-                    <Row>MANIFEST YAML</Row>
-                    {/* <Button
+                                                            </Accordion>
+                                                        </Card>
+                                                    </div>
+                                                )
+                                            }) : "No capabilities"
+                                        }
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        </Container>
+                    </Col>
+                    <Col xs={6} sm={4}>
+                        <Row>MANIFEST YAML</Row>
+                        {/* <Button
                         variant="primary"
                         onClick={(e) => {
                             let paste = navigator.clipboard.readText();
@@ -280,23 +280,23 @@ export default function App() {
                     >
                         Paste
                     </Button> */}
-                    <div>
-                        
-                        <CodeEditor
-                            value={yaml.dump(manifest) || ""}
-                            language="yaml"
-                            onChange={handleManifestTextChange}
-                            padding={15}
-                            style={{
-                                fontSize: 12,
-                                backgroundColor: "#f5f5f5",
-                                fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-                            }}
-                        />
-                    </div>
-                </Col>
-            </Row>
-}
+                        <div>
+
+                            <CodeEditor
+                                value={yaml.dump(manifest) || ""}
+                                language="yaml"
+                                onChange={handleManifestTextChange}
+                                padding={15}
+                                style={{
+                                    fontSize: 12,
+                                    backgroundColor: "#f5f5f5",
+                                    fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                                }}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            }
         </Container>
 
     )
