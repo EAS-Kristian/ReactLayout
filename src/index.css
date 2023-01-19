@@ -32,4 +32,19 @@ code {
   padding: 0px !important;
 }
 
+.manifest-yaml {
+  margin: 1px
+}
+
+.card-back {
+  color: red;
+}
+
+.back-bg {
+ background-color: brown !important;
+}
+
+/* .deleteinvalid {
+  margin-left: 30px
+} */
 
