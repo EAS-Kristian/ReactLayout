@@ -19,6 +19,7 @@ import Form from "@rjsf/bootstrap-4";
 
 
 
+
 export default function App() {
 
   const [capabilities, setCapabilities] = useState({});
@@ -27,7 +28,8 @@ export default function App() {
   const [selectedVersion, setSelectedVersion] = useState(undefined);
   const [invalidCapabilities, setInValidCapabilities] = useState([]);
   const [invalidDirectives, setInValidDirectives] = useState([]);
- 
+  const [yamlError, setYamlError] = useState("");
+
 
   useEffect(() => {
     let fn = async () => {
@@ -58,7 +60,7 @@ export default function App() {
   })
 
   const loadCache = async (manifestPasted) => {
-    setLoadingTextBox(true)
+    //setLoadingTextBox(true)
     const cap = []
     const dir = []
     let curCapabilities = capabilities
@@ -74,7 +76,6 @@ export default function App() {
                   let directive = component.directives[directiveIndex]
                   let { data } = await axios.get(`/api/capability/${component.name}-capability/tag/${component.version}/directive/${Object.keys(directive)[0]}`)
                   console.log(directive)
-
                   if (curCapabilities[component.name][component.version][Object.keys(directive)[0]]) {
                     curCapabilities[component.name][component.version][Object.keys(directive)[0]] = data
                   } else {
@@ -98,10 +99,9 @@ export default function App() {
         console.log("capabilities: expected and not found")
       }
       setCapabilities(curCapabilities)
-      setLoadingTextBox(false)
     }
     else {
-       let tempObj={"capabilities": []}
+      let tempObj = { "capabilities": [] }
       setManifest(tempObj)
       loadCache(yaml.load)
     }
@@ -137,7 +137,7 @@ export default function App() {
   const deleteCapability = (componentIndex) => {
     let tempCode = { ...manifest }
     delete tempCode.capabilities[componentIndex]
-    tempCode.capabilities = tempCode.capabilities.filter(function () { return true })
+    tempCode.capabilities = tempCode.capabilities.filter(function () { return true });
     setManifest(tempCode)
   }
 
@@ -151,16 +151,26 @@ export default function App() {
         "directives": []
       });
     }
-
     setManifest(m);
     loadCache(m)
 
   }
   const handleManifestTextChange = event => {
-    setManifest(yaml.load(event.target.value));
-    loadCache(yaml.load(event.target.value));
-  }
+    try {
+      const hat = yaml.load(event.target.value);
+      setManifest(hat);
+      loadCache(hat);
+      setYamlError("");
+    } catch (e) {
+      //setYamlError(e.message)
+      setYamlError("Invalid YAML format")
+    }
 
+  }
+  // const handleManifestTextChange = event => {
+  //   setManifest(yaml.load(event.target.value));
+  //   loadCache(yaml.load(event.target.value));
+  // }
 
   return (
 
@@ -175,7 +185,7 @@ export default function App() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
                     <Nav.Link href="#features">How-To Guide</Nav.Link>
-                    <Nav.Link href="https://github.com/">Github</Nav.Link>
+                    <Nav.Link href="https://github.com/">Github</Nav.Link>  
                   </Nav>
                 </Navbar.Collapse>
               </Container>
@@ -218,7 +228,7 @@ export default function App() {
                 </Card.Header>
                 <Card.Body className="cardname">
                   <Row sm={8}>
-                    {manifest.capabilities ? manifest.capabilities.map((component, componentIndex) => {
+                    {(manifest.capabilities && typeof (manifest.capabilities) === "object") ? manifest.capabilities.map((component, componentIndex) => {
                       return (
                         <div >
                           <Card className="no-padding">
@@ -320,6 +330,7 @@ export default function App() {
                   fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
                 }}
               />
+              <h3>{yamlError}</h3>
             </div>
           </Col>
         </Row>
