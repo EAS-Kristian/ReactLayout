@@ -1,6 +1,7 @@
 import {createContext} from 'react'
 import {useState} from "react";
 
+
 const Context = createContext()
 function StateProvider(props) {
     const [capabilities, setCapabilities] = useState({});
@@ -10,10 +11,13 @@ function StateProvider(props) {
     const [invalidCapabilities, setInValidCapabilities] = useState([]);
     const [invalidDirectives, setInValidDirectives] = useState([]);
     const [yamlError, setYamlError] = useState("");
-    const [digger, setDigger] = useState('hello')
+    const [manifest, setManifest] = useState({
+        "capabilities": [
+        ]})
+  
 
     return (
-        <Context.Provider value={{ capabilities: [capabilities, setCapabilities], loadingTextBox: [loadingTextBox, setLoadingTextBox], selectedCapability: [selectedCapability, setSelectedCap], selectedVersion: [selectedVersion, setSelectedVersion], invalidCapabilities: [invalidCapabilities, setInValidCapabilities], invalidDirectives: [invalidDirectives, setInValidDirectives], yamlError: [yamlError, setYamlError], digger: [digger, setDigger] }}>
+        <Context.Provider value={{capabilities: [capabilities, setCapabilities], loadingTextBox: [loadingTextBox, setLoadingTextBox], selectedCapability: [selectedCapability, setSelectedCap], selectedVersion: [selectedVersion, setSelectedVersion], invalidCapabilities: [invalidCapabilities, setInValidCapabilities], invalidDirectives: [invalidDirectives, setInValidDirectives], yamlError: [yamlError, setYamlError],manifest:[manifest,setManifest] }}>
             {props.children}
         </Context.Provider>
     )
