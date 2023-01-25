@@ -127,13 +127,51 @@ function StateProvider(props) {
 
     }
 
+    const MoveCapability = (direction, componentIndex) => {
+        let tempObj = manifest
+        let thisCapability = tempObj.capabilities[componentIndex]
+
+        if (direction === "UP" && (tempObj.capabilities[componentIndex - 1] != undefined)) {
+            let targetCapability = tempObj.capabilities[componentIndex - 1]
+            tempObj.capabilities[componentIndex] = targetCapability
+            tempObj.capabilities[componentIndex - 1] = thisCapability
+        }
+        if (direction === "DOWN" && (tempObj.capabilities[componentIndex + 1] != undefined)) {
+            let targetCapability = tempObj.capabilities[componentIndex + 1]
+            tempObj.capabilities[componentIndex] = targetCapability
+            tempObj.capabilities[componentIndex + 1] = thisCapability
+        }
+        setManifest(tempObj)
+        LoadCache(tempObj)
+
+    }
+
+    const MoveDirective = (direction, componentIndex, directiveIndex) => {
+        let tempObj = manifest
+        let thisDirective = tempObj.capabilities[componentIndex].directives[directiveIndex]
+
+        if (direction === "UP" && (tempObj.capabilities[componentIndex].directives[directiveIndex - 1] !== undefined)) {
+            let targetDirective = tempObj.capabilities[componentIndex].directives[directiveIndex - 1]
+            tempObj.capabilities[componentIndex].directives[directiveIndex] = targetDirective
+            tempObj.capabilities[componentIndex].directives[directiveIndex - 1] = thisDirective
+        }
+        if (direction === "DOWN" && (tempObj.capabilities[componentIndex].directives[directiveIndex + 1] !== undefined)) {
+            let targetDirective = tempObj.capabilities[componentIndex].directives[directiveIndex + 1]
+            tempObj.capabilities[componentIndex].directives[directiveIndex] = targetDirective
+            tempObj.capabilities[componentIndex].directives[directiveIndex + 1] = thisDirective
+        }
+        setManifest(tempObj)
+        LoadCache(tempObj)
+
+    }
+
 
     return (
         <Context.Provider value={{
             capabilities: [capabilities, setCapabilities], loadingTextBox: [loadingTextBox, setLoadingTextBox], selectedCapability: [selectedCapability, setSelectedCap], selectedVersion: [selectedVersion, setSelectedVersion],
             invalidCapabilities: [invalidCapabilities, setInValidCapabilities], invalidDirectives: [invalidDirectives, setInValidDirectives], yamlError: [yamlError, setYamlError],
             manifest: [manifest, setManifest], HandleAddCapability: HandleAddCapability, LoadCache: LoadCache, DeleteCapability: DeleteCapability,
-            DeleteDirective: DeleteDirective, AddDirective: AddDirective, HandleManifestTextChange: HandleManifestTextChange, HandleUpdateDirective: HandleUpdateDirective
+            DeleteDirective: DeleteDirective, AddDirective: AddDirective, HandleManifestTextChange: HandleManifestTextChange, HandleUpdateDirective: HandleUpdateDirective, MoveCapability: MoveCapability, MoveDirective: MoveDirective
         }}>
             {props.children}
         </Context.Provider>

@@ -14,14 +14,14 @@ import Capabilities from './components/Capabilities';
 import InputArea from './components/InputArea';
 
 
+
+
 export default function App() {
 
   const desk = useContext(Context)
   console.log(desk)
-  const [setCapabilities] = useContext(Context).setCapabilities;
+  const [capabilities, setCapabilities] = useContext(Context).capabilities;
   const [loadingTextBox, setLoadingTextBox] = useContext(Context).loadingTextBox;
-
-
 
 
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function App() {
           for (let k in capabilitiesTagsDirectives) {
             tempObj[capabilitiesData[i]] ? tempObj[capabilitiesData[i]][capabilitiesTagsData[j]][capabilitiesTagsDirectives[k]] = {} : tempObj[capabilitiesData[i]][capabilitiesTagsData[j]] = { [capabilitiesTagsDirectives[k]]: {} }
           }
+
         }
       }
       setCapabilities(tempObj)
