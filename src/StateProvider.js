@@ -1,6 +1,7 @@
-import {createContext} from 'react'
-import {useState} from "react";
-
+import { createContext } from 'react'
+import { useState } from "react";
+import yaml from 'js-yaml';
+import axios from "axios";
 
 const Context = createContext()
 function StateProvider(props) {
@@ -13,14 +14,130 @@ function StateProvider(props) {
     const [yamlError, setYamlError] = useState("");
     const [manifest, setManifest] = useState({
         "capabilities": [
-        ]})
-  
+        ]
+    })
+
+
+    const HandleAddCapability = (capability, version) => {
+        let m = { ...manifest }
+        if (m.capabilities) {
+            m.capabilities.push({
+                "name": capability,
+                "version": version,
+                "directives": []
+            });
+        }
+        setManifest(m);
+        LoadCache(m)
+
+    }
+
+    const LoadCache = async (manifestPasted) => {
+        const cap = []
+        const dir = []
+        let curCapabilities = capabilities
+        console.log(manifestPasted)
+        if (manifestPasted !== undefined) {
+            if (manifestPasted.capabilities) {
+                for (let componentIndex in manifestPasted.capabilities) {
+                    let component = manifestPasted.capabilities[componentIndex]
+                    if (curCapabilities[component.name]) {
+                        if (curCapabilities[component.name][component.version]) {
+                            if (component.directives) {
+                                for (let directiveIndex in component.directives) {
+                                    let directive = component.directives[directiveIndex]
+                                    let { data } = await axios.get(`/api/capability/${component.name}-capability/tag/${component.version}/directive/${Object.keys(directive)[0]}`)
+                                    console.log(directive)
+                                    if (curCapabilities[component.name][component.version][Object.keys(directive)[0]]) {
+                                        curCapabilities[component.name][component.version][Object.keys(directive)[0]] = data
+                                    } else {
+                                        curCapabilities[component.name][component.version][Object.keys(directive)[0]] = {}
+                                        dir.push({ cap: Number(componentIndex), dir: Number(directiveIndex) })
+                                    }
+                                }
+                            } else {
+                            }
+                        } else {
+                            cap.push(componentIndex)
+                        }
+                    } else {
+                        cap.push(componentIndex)
+                    }
+                }
+                setInValidCapabilities(cap)
+                setInValidDirectives(dir)
+            }
+            else {
+                console.log("capabilities: expected and not found")
+            }
+            setCapabilities(curCapabilities)
+        }
+        else {
+            let tempObj = { "capabilities": [] }
+            setManifest(tempObj)
+            LoadCache(yaml.load)
+        }
+
+    }
+
+    const DeleteCapability = (componentIndex) => {
+        let tempCode = { ...manifest }
+        delete tempCode.capabilities[componentIndex]
+        tempCode.capabilities = tempCode.capabilities.filter(function () { return true });
+        setManifest(tempCode)
+    }
+
+    const DeleteDirective = (componentIndex, directiveIndex) => {
+        let tempCode = { ...manifest }
+        delete tempCode.capabilities[componentIndex].directives[directiveIndex]
+        tempCode.capabilities[componentIndex].directives = tempCode.capabilities[componentIndex].directives.filter(function () { return true });
+        setManifest(tempCode)
+
+    }
+
+    const AddDirective = (componentIndex, directiveName) => {
+
+        let tempCode = { ...manifest }
+        if (tempCode.capabilities[componentIndex].directives) {
+            tempCode.capabilities[componentIndex].directives.push({ [directiveName]: {} })
+        }
+        else {
+            console.log("No Directives")
+        }
+        setManifest(tempCode);
+        LoadCache(manifest)
+    }
+
+    const HandleManifestTextChange = event => {
+        try {
+            const hat = yaml.load(event.target.value);
+            setManifest(hat);
+            LoadCache(hat);
+            setYamlError("");
+        } catch (e) {
+            setYamlError("Invalid YAML format")
+        }
+
+    }
+
+    const HandleUpdateDirective = (formData, componentIndex, directiveIndex) => {
+        let m = { ...manifest }
+        m.capabilities[componentIndex].directives[directiveIndex] = formData.formData;
+        setManifest(m);
+
+    }
+
 
     return (
-        <Context.Provider value={{capabilities: [capabilities, setCapabilities], loadingTextBox: [loadingTextBox, setLoadingTextBox], selectedCapability: [selectedCapability, setSelectedCap], selectedVersion: [selectedVersion, setSelectedVersion], invalidCapabilities: [invalidCapabilities, setInValidCapabilities], invalidDirectives: [invalidDirectives, setInValidDirectives], yamlError: [yamlError, setYamlError],manifest:[manifest,setManifest] }}>
+        <Context.Provider value={{
+            capabilities: [capabilities, setCapabilities], loadingTextBox: [loadingTextBox, setLoadingTextBox], selectedCapability: [selectedCapability, setSelectedCap], selectedVersion: [selectedVersion, setSelectedVersion],
+            invalidCapabilities: [invalidCapabilities, setInValidCapabilities], invalidDirectives: [invalidDirectives, setInValidDirectives], yamlError: [yamlError, setYamlError],
+            manifest: [manifest, setManifest], HandleAddCapability: HandleAddCapability, LoadCache: LoadCache, DeleteCapability: DeleteCapability,
+            DeleteDirective: DeleteDirective, AddDirective: AddDirective, HandleManifestTextChange: HandleManifestTextChange, HandleUpdateDirective: HandleUpdateDirective
+        }}>
             {props.children}
         </Context.Provider>
     )
 }
-export {StateProvider}
+export { StateProvider }
 export default Context

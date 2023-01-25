@@ -6,12 +6,13 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { Button } from 'react-bootstrap';
 import Context from '../StateProvider'
-import HandleAddCapability from './AddCap';
+
 
 function Menu() {
     const [capabilities] = useContext(Context).capabilities;
     const [selectedCapability, setSelectedCap] = useContext(Context).selectedCapability;
     const [selectedVersion, setSelectedVersion] = useContext(Context).selectedVersion;
+    const HandleAddCapability = useContext(Context).HandleAddCapability
     return (
         <Card>
             {console.log(capabilities)}
