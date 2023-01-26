@@ -15,7 +15,6 @@ function Menu() {
     const HandleAddCapability = useContext(Context).HandleAddCapability
     return (
         <Card>
-            {console.log(capabilities)}
             <Card.Header as="h5">Manifest</Card.Header>
             <Card.Header>
                 <Row>

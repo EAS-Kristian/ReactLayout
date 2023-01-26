@@ -7,7 +7,6 @@ import Directive from './Directive';
 
 function Directives({ component, componentIndex }) {
 
-    // let component = manifestPasted.capabilities[componentIndex]
     const invalidCapabilities = useContext(Context).invalidCapabilities
 
     return (

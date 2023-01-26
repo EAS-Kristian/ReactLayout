@@ -15,12 +15,9 @@ import InputArea from './components/InputArea';
 
 
 
-
 export default function App() {
 
-  const desk = useContext(Context)
-  console.log(desk)
-  const [capabilities, setCapabilities] = useContext(Context).capabilities;
+  const setCapabilities = useContext(Context).capabilities[1];
   const [loadingTextBox, setLoadingTextBox] = useContext(Context).loadingTextBox;
 
 
@@ -45,7 +42,7 @@ export default function App() {
     }
 
     fn()
-  }, []);
+  }, [setCapabilities, setLoadingTextBox]);
 
   return (
     <Container fluid>

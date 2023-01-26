@@ -36,7 +36,6 @@ function StateProvider(props) {
         const cap = []
         const dir = []
         let curCapabilities = capabilities
-        console.log(manifestPasted)
         if (manifestPasted !== undefined) {
             if (manifestPasted.capabilities) {
                 for (let componentIndex in manifestPasted.capabilities) {
@@ -47,7 +46,6 @@ function StateProvider(props) {
                                 for (let directiveIndex in component.directives) {
                                     let directive = component.directives[directiveIndex]
                                     let { data } = await axios.get(`/api/capability/${component.name}-capability/tag/${component.version}/directive/${Object.keys(directive)[0]}`)
-                                    console.log(directive)
                                     if (curCapabilities[component.name][component.version][Object.keys(directive)[0]]) {
                                         curCapabilities[component.name][component.version][Object.keys(directive)[0]] = data
                                     } else {
@@ -131,12 +129,12 @@ function StateProvider(props) {
         let tempObj = manifest
         let thisCapability = tempObj.capabilities[componentIndex]
 
-        if (direction === "UP" && (tempObj.capabilities[componentIndex - 1] != undefined)) {
+        if (direction === "UP" && (tempObj.capabilities[componentIndex - 1] !== undefined)) {
             let targetCapability = tempObj.capabilities[componentIndex - 1]
             tempObj.capabilities[componentIndex] = targetCapability
             tempObj.capabilities[componentIndex - 1] = thisCapability
         }
-        if (direction === "DOWN" && (tempObj.capabilities[componentIndex + 1] != undefined)) {
+        if (direction === "DOWN" && (tempObj.capabilities[componentIndex + 1] !== undefined)) {
             let targetCapability = tempObj.capabilities[componentIndex + 1]
             tempObj.capabilities[componentIndex] = targetCapability
             tempObj.capabilities[componentIndex + 1] = thisCapability
