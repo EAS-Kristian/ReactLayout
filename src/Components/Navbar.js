@@ -1,11 +1,12 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import './navbar.css'
 
 function navBar() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
-      <Container>
+      <Container className='manifest-val-navbar' >
         <Navbar.Brand href="#home">Documentation</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -16,6 +17,7 @@ function navBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+
   );
 }
 
