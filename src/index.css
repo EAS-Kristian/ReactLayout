@@ -43,3 +43,7 @@ code {
 .back-bg {
   background-color: brown !important;
 }
+
+div.container-fluid {
+  --bs-gutter-x: 0 !important;
+}
