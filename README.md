@@ -1,7 +1,4 @@
 
-
-
-
 ## Introduction
 This app is designed to simplify the building of Manifest validation files. It gets the capabilities and their respective versions as well as the necessary directives via an api. All of the data is loaded into the cache to limit the amount of api calls made
 
@@ -29,10 +26,43 @@ This app is designed to simplify the building of Manifest validation files. It g
 
 6. Click the blue plus and type your required directory into the input box, this will appear in text area on the right 
 
-7. You can as as many capabilities,directives and directories that you require 
+7. You can as add many capabilities,directives and directories that you require 
 
 
-Your Yaml will look something like this: 
+If the user already has data they'd like to use, then they should paste it into the text box on the ride hand side of the page. This will turn the data to yaml and also display in the GUI on the left hand side. Here is some example data: 
+
+```
+"capabilities": [
+  {
+    "name": "fileutils",
+    "version": "0.0.2",
+    "groups": [
+      "iis,sql"
+    ],
+    "directives": [
+      {
+        "fileutils_create": {
+          "directory": [
+            "/home/kris/app", "/home/david"
+          ]
+        }
+      }, {
+        "fileutils_delete": {
+          "file": [
+            "/home/kris/app.txt"
+          ]
+        }
+      }
+    ]
+  }
+]
+```
+
+
+
+
+
+
 
 
 
